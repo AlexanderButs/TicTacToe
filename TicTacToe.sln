@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{64DDF3A6-913F-4788-84CF-773BBD8E071F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{6488F6C2-C1D7-4E78-A239-A53629C08AF4}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TicTacToe", "src\TicTacToe\TicTacToe.xproj", "{B0C09788-0EB6-4542-B5BA-E85526890D84}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{25921153-25DF-49FB-A8E9-7C92306118B1}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "TicTacToe.Test", "test\TicTacToe.Test\TicTacToe.Test.xproj", "{45524E65-D83E-4122-8E80-35FCC96BECEE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B0C09788-0EB6-4542-B5BA-E85526890D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0C09788-0EB6-4542-B5BA-E85526890D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0C09788-0EB6-4542-B5BA-E85526890D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0C09788-0EB6-4542-B5BA-E85526890D84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45524E65-D83E-4122-8E80-35FCC96BECEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45524E65-D83E-4122-8E80-35FCC96BECEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45524E65-D83E-4122-8E80-35FCC96BECEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45524E65-D83E-4122-8E80-35FCC96BECEE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{B0C09788-0EB6-4542-B5BA-E85526890D84} = {64DDF3A6-913F-4788-84CF-773BBD8E071F}
+		{45524E65-D83E-4122-8E80-35FCC96BECEE} = {25921153-25DF-49FB-A8E9-7C92306118B1}
+	EndGlobalSection
+EndGlobal
