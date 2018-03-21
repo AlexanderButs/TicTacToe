@@ -1,0 +1,1 @@
+docker build -f .\test\Dockerfile . -t tictactoe_test
