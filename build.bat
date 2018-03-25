@@ -1,1 +1,1 @@
-docker build . -t tictactoe
+dotnet build

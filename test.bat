@@ -1,1 +1,1 @@
-docker build -f .\test\Dockerfile . -t tictactoe_test
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info ./test/TicTacToe.Test/TicTacToe.Test.csproj
