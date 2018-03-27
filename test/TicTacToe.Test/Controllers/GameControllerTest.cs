@@ -21,6 +21,19 @@ namespace TicTacToe.Test.Controllers
     public class GameControllerTest
     {
         [Test]
+        public async Task ShouldReturnNotFoundIfThereIsNoGame()
+        {
+            using (var server = CreateTestServer())
+            {
+                using (var client = server.CreateClient())
+                {
+                    var postResponse = await client.GetAsync("api/game/123456");
+                    postResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
+                }
+            }
+        }
+
+        [Test]
         public async Task ShouldCreateNewGame()
         {
             using (var server = CreateTestServer())

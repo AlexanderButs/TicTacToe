@@ -1,1 +1,1 @@
-dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./lcov.info ./test/TicTacToe.Test/TicTacToe.Test.csproj
+dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=lcov /p:CoverletOutput=./bin/lcov.info ./test/TicTacToe.Test/TicTacToe.Test.csproj
