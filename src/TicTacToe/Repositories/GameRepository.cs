@@ -80,9 +80,7 @@ namespace TicTacToe.Repositories
             }
         }
 
-        private bool IsThereStartedGameImpl(string player1Id, string player2Id)
-        {
-            return _gameById.Values.Any(g => g.IsGameAgainst(player1Id, player2Id) && !g.GameOver);
-        }
+        private bool IsThereStartedGameImpl(string player1Id, string player2Id) =>
+            _gameById.Values.Any(g => g.IsGameAgainst(player1Id, player2Id) && !g.GameOver);
     }
 }
