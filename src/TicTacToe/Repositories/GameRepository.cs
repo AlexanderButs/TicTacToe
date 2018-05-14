@@ -13,7 +13,7 @@ namespace TicTacToe.Repositories
     {
         Task<Game> GetGameByIdAsync(string gameId);
 
-        Task<bool> IsThereStartedGame(string player1Id, string player2Id);
+        Task<bool> IsThereStartedGame(uint player1Id, uint player2Id);
 
         Task AddGameAsync(Game game);
 
@@ -40,7 +40,7 @@ namespace TicTacToe.Repositories
             }
         }
 
-        public async Task<bool> IsThereStartedGame(string player1Id, string player2Id)
+        public async Task<bool> IsThereStartedGame(uint player1Id, uint player2Id)
         {
             using (await _mutex.LockAsync())
             {
@@ -80,7 +80,7 @@ namespace TicTacToe.Repositories
             }
         }
 
-        private bool IsThereStartedGameImpl(string player1Id, string player2Id) =>
+        private bool IsThereStartedGameImpl(uint player1Id, uint player2Id) =>
             _gameById.Values.Any(g => g.IsGameAgainst(player1Id, player2Id) && !g.GameOver);
     }
 }

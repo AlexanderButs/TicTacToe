@@ -15,29 +15,29 @@ namespace TicTacToe.Model
         public int Cas { get; set; }
 
         [JsonIgnore]
-        public string Player1Id { get; set; }
+        public uint Player1Id { get; set; }
 
         [JsonIgnore]
-        public string Player2Id { get; set; }
+        public uint Player2Id { get; set; }
 
         [JsonProperty("winnerId")]
-        public string WinnerId { get; set; }
+        public uint? WinnerId { get; set; }
 
         [JsonProperty("gameOver")]
         public bool GameOver { get; set; }
 
         [JsonIgnore]
-        private string[,] _moves = new string[3, 3];
+        private uint?[,] _moves = new uint?[3, 3];
 
-        public bool IsGameAgainst(string player1Id, string player2Id) =>
+        public bool IsGameAgainst(uint player1Id, uint player2Id) =>
             (Player1Id == player1Id && Player2Id == player2Id) || (Player1Id == player2Id && Player2Id == player1Id);
 
-        public bool IsParticipant(string player1Id) =>
+        public bool IsParticipant(uint player1Id) =>
             Player1Id == player1Id || Player2Id == player1Id;
 
         public Game Clone()
         {
-            var moves = new string[3, 3];
+            var moves = new uint?[3, 3];
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 3; j++)
@@ -96,7 +96,7 @@ namespace TicTacToe.Model
                 _moves[point2.Item1, point2.Item2] == _moves[point3.Item1, point3.Item2])
             {
                 GameOver = true;
-                WinnerId = _moves[point1.Item1, point1.Item2];
+                WinnerId = _moves[point1.Item1, point1.Item2].Value;
             }
         }
 

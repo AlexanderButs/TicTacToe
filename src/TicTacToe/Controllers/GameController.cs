@@ -21,9 +21,9 @@ namespace TicTacToe.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateGameAsync([FromQuery] string player1Id, [FromQuery] string player2Id)
+        public async Task<IActionResult> CreateGameAsync([FromQuery] uint player1Id, [FromQuery] uint player2Id)
         {
-            if (player1Id == player2Id)
+            if (player1Id == 0 || player2Id == 0 || player1Id == player2Id)
             {
                 return BadRequest();
             }

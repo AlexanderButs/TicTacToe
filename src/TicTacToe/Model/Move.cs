@@ -5,7 +5,7 @@ namespace TicTacToe.Model
     public class Move
     {
         [JsonProperty("playerId")]
-        public string PlayerId { get; set; }
+        public uint PlayerId { get; set; }
 
         [JsonProperty("x")]
         public int X { get; set; }
