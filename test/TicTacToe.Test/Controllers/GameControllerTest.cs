@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Formatting;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,8 +9,6 @@ using FluentAssertions;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
-
-using Newtonsoft.Json;
 
 using NUnit.Framework;
 
@@ -51,14 +50,13 @@ namespace TicTacToe.Test.Controllers
                 "api/game?player1Id=1&player2Id=2", null);
 
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
             gameCreated.GameId.Should().NotBeNullOrEmpty();
 
             var getResponse = await m_client.GetAsync($"api/game/{gameCreated.GameId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             var getData = await getResponse.Content.ReadAsStringAsync();
-            var game = JsonConvert.DeserializeObject<Game>(getData);
+            var game = await getResponse.Content.ReadAsAsync<Game>();
             game.Should().NotBeNull();
         }
 
@@ -89,8 +87,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             await MakeMove(m_client, gameCreated.GameId, "1", 0, 0);
             await MakeMove(m_client, gameCreated.GameId, "2", 1, 0);
@@ -107,9 +104,8 @@ namespace TicTacToe.Test.Controllers
         public async Task ShouldNotAllowMakeMoveForNotFoundGame()
         {
             var move = new Move { PlayerId = "3", X = 0, Y = 0 };
-            var content = new StringContent(JsonConvert.SerializeObject(move), Encoding.UTF8, "application/json");
-            var putResponse = await m_client.PutAsync(
-                $"api/game/{Guid.NewGuid()}", content);
+            var putResponse = await m_client.PutAsJsonAsync<Move>(
+                $"api/game/{Guid.NewGuid()}", move);
             putResponse.StatusCode.Should().Be(HttpStatusCode.NotFound);
         }
 
@@ -119,8 +115,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             var putResponse = await MakeMove(m_client, gameCreated.GameId, "3", 0, 0);
             putResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -132,8 +127,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             var putResponse = await MakeMove(m_client, gameCreated.GameId, "1", -1, -1);
             putResponse.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -148,8 +142,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             var putResponse1 = await MakeMove(m_client, gameCreated.GameId, "1", 1, 1);
             putResponse1.StatusCode.Should().Be(HttpStatusCode.OK);
@@ -164,8 +157,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             var putResponse1 = await MakeMove(m_client, gameCreated.GameId, "2", 1, 1);
             putResponse1.StatusCode.Should().Be(HttpStatusCode.BadRequest);
@@ -189,8 +181,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             await MakeMove(m_client, gameCreated.GameId, "1", 0, 0);
             await MakeMove(m_client, gameCreated.GameId, "2", 1, 0);
@@ -201,7 +192,7 @@ namespace TicTacToe.Test.Controllers
             var getResponse = await m_client.GetAsync($"api/game/{gameCreated.GameId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
             var getData = await getResponse.Content.ReadAsStringAsync();
-            var game = JsonConvert.DeserializeObject<Game>(getData);
+            var game = await getResponse.Content.ReadAsAsync<Game>();
             game.GameOver.Should().BeTrue();
             game.WinnerId.Should().Be("1");
         }
@@ -212,8 +203,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             await MakeMove(m_client, gameCreated.GameId, "1", 0, 0);
             await MakeMove(m_client, gameCreated.GameId, "2", 1, 0);
@@ -224,8 +214,7 @@ namespace TicTacToe.Test.Controllers
 
             var getResponse = await m_client.GetAsync($"api/game/{gameCreated.GameId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var getData = await getResponse.Content.ReadAsStringAsync();
-            var game = JsonConvert.DeserializeObject<Game>(getData);
+            var game = await getResponse.Content.ReadAsAsync<Game>();
             game.GameOver.Should().BeTrue();
             game.WinnerId.Should().Be("2");
         }
@@ -236,8 +225,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             await MakeMove(m_client, gameCreated.GameId, "1", 0, 0);
             await MakeMove(m_client, gameCreated.GameId, "2", 0, 1);
@@ -251,8 +239,7 @@ namespace TicTacToe.Test.Controllers
 
             var getResponse = await m_client.GetAsync($"api/game/{gameCreated.GameId}");
             getResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var getData = await getResponse.Content.ReadAsStringAsync();
-            var game = JsonConvert.DeserializeObject<Game>(getData);
+            var game = await getResponse.Content.ReadAsAsync<Game>();
             game.GameOver.Should().BeTrue();
             game.WinnerId.Should().BeNull();
         }
@@ -263,8 +250,7 @@ namespace TicTacToe.Test.Controllers
             var postResponse = await m_client.PostAsync(
                 "api/game?player1Id=1&player2Id=2", null);
             postResponse.StatusCode.Should().Be(HttpStatusCode.OK);
-            var postData = await postResponse.Content.ReadAsStringAsync();
-            var gameCreated = JsonConvert.DeserializeObject<GameCreated>(postData);
+            var gameCreated = await postResponse.Content.ReadAsAsync<GameCreated>();
 
             await MakeMove(m_client, gameCreated.GameId, "1", 0, 0);
             await MakeMove(m_client, gameCreated.GameId, "2", 1, 0);
@@ -283,12 +269,10 @@ namespace TicTacToe.Test.Controllers
             return new TestServer(webHostBuilder);
         }
 
-        private static async Task<HttpResponseMessage> MakeMove(HttpClient client, string gameId, string playerId, int x, int y)
+        private static Task<HttpResponseMessage> MakeMove(HttpClient client, string gameId, string playerId, int x, int y)
         {
             var move = new Move { PlayerId = playerId, X = x, Y = y };
-            var content = new StringContent(JsonConvert.SerializeObject(move), Encoding.UTF8, "application/json");
-            return await client.PutAsync(
-                $"api/game/{gameId}", content);
+            return client.PutAsJsonAsync<Move>($"api/game/{gameId}", move);
         }
     }
 }
