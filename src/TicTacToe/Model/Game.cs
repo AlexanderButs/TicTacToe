@@ -75,28 +75,28 @@ namespace TicTacToe.Model
         {
             for (int i = 0; i < 3 && !GameOver; i++)
             {
-                CheckLine(new Tuple<int, int>(i, 0), new Tuple<int, int>(i, 1), new Tuple<int, int>(i, 2));
+                CheckLine((i, 0), (i, 1), (i, 2));
             }
 
             for (int i = 0; i < 3 && !GameOver; i++)
             {
-                CheckLine(new Tuple<int, int>(0, i), new Tuple<int, int>(1, i), new Tuple<int, int>(2, i));
+                CheckLine((0, i), (1, i), (2, i));
             }
 
-            CheckLine(new Tuple<int, int>(0, 0), new Tuple<int, int>(1, 1), new Tuple<int, int>(2, 2));
-            CheckLine(new Tuple<int, int>(2, 0), new Tuple<int, int>(1, 1), new Tuple<int, int>(0, 2));
+            CheckLine((0, 0), (1, 1), (2, 2));
+            CheckLine((2, 0), (1, 1), (0, 2));
 
             CheckDraw();
         }
 
-        private void CheckLine(Tuple<int, int> point1, Tuple<int, int> point2, Tuple<int, int> point3)
+        private void CheckLine((int X, int Y) point1, (int X, int Y) point2, (int X, int Y) point3)
         {
-            if (_moves[point1.Item1, point1.Item2] != null &&
-                _moves[point1.Item1, point1.Item2] == _moves[point2.Item1, point2.Item2] &&
-                _moves[point2.Item1, point2.Item2] == _moves[point3.Item1, point3.Item2])
+            if (_moves[point1.X, point1.Y] != null &&
+                _moves[point1.X, point1.Y] == _moves[point2.X, point2.Y] &&
+                _moves[point2.X, point2.Y] == _moves[point3.X, point3.Y])
             {
                 GameOver = true;
-                WinnerId = _moves[point1.Item1, point1.Item2].Value;
+                WinnerId = _moves[point1.X, point1.Y].Value;
             }
         }
 

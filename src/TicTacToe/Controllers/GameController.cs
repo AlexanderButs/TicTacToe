@@ -62,6 +62,7 @@ namespace TicTacToe.Controllers
         [ProducesResponseType(typeof(Game), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(SerializableError), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> MakeMoveAsync(string gameId, [FromBody] Move move)
         {
             var game = await _gameRepository.GetGameByIdAsync(gameId);
@@ -79,7 +80,15 @@ namespace TicTacToe.Controllers
                 return BadRequest(ex.Message);
             }
 
-            await _gameRepository.UpdateGameAsync(game);
+            try
+            {
+                await _gameRepository.UpdateGameAsync(game);  
+            }
+            catch (System.Exception)
+            {
+                return StatusCode((int)HttpStatusCode.Conflict);
+            }
+
             return Ok();
         }
     }
