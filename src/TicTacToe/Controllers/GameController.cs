@@ -21,6 +21,9 @@ namespace TicTacToe.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(typeof(GameCreated), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(SerializableError), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.Conflict)]
         public async Task<IActionResult> CreateGameAsync([FromQuery] uint player1Id, [FromQuery] uint player2Id)
         {
             if (player1Id == 0 || player2Id == 0 || player1Id == player2Id)
@@ -42,6 +45,8 @@ namespace TicTacToe.Controllers
         }
 
         [HttpGet("{gameId}")]
+        [ProducesResponseType(typeof(Game), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> GetGameAsync(string gameId)
         {
             var game = await _gameRepository.GetGameByIdAsync(gameId);
@@ -54,6 +59,9 @@ namespace TicTacToe.Controllers
         }
 
         [HttpPut("{gameId}")]
+        [ProducesResponseType(typeof(Game), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(SerializableError), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType((int)HttpStatusCode.NotFound)]
         public async Task<IActionResult> MakeMoveAsync(string gameId, [FromBody] Move move)
         {
             var game = await _gameRepository.GetGameByIdAsync(gameId);

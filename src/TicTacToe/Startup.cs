@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Builder;
@@ -9,12 +10,18 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+using NJsonSchema;
+
+using NSwag.AspNetCore;
+
 using TicTacToe.Repositories;
 
 namespace TicTacToe
 {
     public class Startup
     {
+        public const string SwaggerRoute = "/swagger";
+
         public Startup(IHostingEnvironment env)
         {
             var builder = new ConfigurationBuilder()
@@ -32,6 +39,7 @@ namespace TicTacToe
         {
             // Add framework services.
             services.AddMvc();
+            services.AddSwagger();
 
             services.AddSingleton<IGameRepository, GameRepository>();
         }
@@ -43,6 +51,11 @@ namespace TicTacToe
             loggerFactory.AddDebug();
 
             app.UseMvc();
+            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly,
+                settings =>
+                {
+                    settings.SwaggerUiRoute = SwaggerRoute;
+                });
         }
     }
 }

@@ -1,21 +1,16 @@
-﻿using System.IO;
+﻿using System.Threading.Tasks;
 
+using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 
 namespace TicTacToe
 {
     public class Program
     {
-        public static void Main(string[] args)
-        {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+        public static Task Main(string[] args) => 
+            WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
-                .Build();
-
-            host.Run();
-        }
+                .Build()
+                .RunAsync();
     }
 }

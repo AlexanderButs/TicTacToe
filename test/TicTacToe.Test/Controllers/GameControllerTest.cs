@@ -34,8 +34,8 @@ namespace TicTacToe.Test.Controllers
         [TearDown]
         public void TearDown()
         {
-            m_client.Dispose();
-            m_server.Dispose();
+            m_client?.Dispose();
+            m_server?.Dispose();
         }
 
         [Test, AutoData]
