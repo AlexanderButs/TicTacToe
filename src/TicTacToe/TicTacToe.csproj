@@ -31,11 +31,12 @@
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.0.2" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="2.0.2" />
     <PackageReference Include="Nito.AsyncEx" Version="5.0.0-pre-05" />
-    <PackageReference Include="NSwag.AspNetCore" Version="11.17.6" />
+    <PackageReference Include="NSwag.AspNetCore" Version="11.17.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.1.4" />
+    <DotNetCliToolReference Include="NSwag.ConsoleCore" Version="11.17.9" />
   </ItemGroup>
 
 </Project>

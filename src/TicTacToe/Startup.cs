@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -18,6 +19,7 @@ using TicTacToe.Repositories;
 
 namespace TicTacToe
 {
+    [ExcludeFromCodeCoverage]
     public class Startup
     {
         public const string SwaggerRoute = "/swagger";

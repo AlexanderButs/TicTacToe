@@ -1,4 +1,5 @@
 #tool nuget:?package=NUnit.ConsoleRunner&version=3.4.0
+//#addin nuget:?package=Cake.NSwag.Console
 
 //////////////////////////////////////////////////////////////////////
 // ARGUMENTS
@@ -15,7 +16,7 @@ var configuration = Argument("configuration", "Release");
 var projName = "TicTacToe";
 var slnDir = Directory(".");
 var srcDir = slnDir + Directory("src");
-var projDir = srcDir + File(projName);
+var projDir = srcDir + Directory(projName);
 var binDir = srcDir + 
     Directory(projName) + 
     Directory("bin") + 
@@ -85,6 +86,14 @@ Task("Publish")
         });
 });
 
+Task("__Swagger")
+    .IsDependentOn("Publish")
+    .Does(() =>
+    {
+        // NSwag.FromWebApiAssembly(publishDir + File("TicTacToe.dll"))
+        //     .ToSwaggerSpecification("./swagger.json");
+    });
+
 //////////////////////////////////////////////////////////////////////
 // TASK TARGETS
 //////////////////////////////////////////////////////////////////////
@@ -95,6 +104,7 @@ Task("Default")
     .IsDependentOn("Build")
     .IsDependentOn("Test")
     .IsDependentOn("Publish");
+    //.IsDependentOn("Swagger");
 
 //////////////////////////////////////////////////////////////////////
 // EXECUTION
