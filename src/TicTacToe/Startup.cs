@@ -13,6 +13,8 @@ using Microsoft.Extensions.Logging;
 
 using NJsonSchema;
 
+using NLog;
+
 using NSwag.AspNetCore;
 
 using TicTacToe.Repositories;
