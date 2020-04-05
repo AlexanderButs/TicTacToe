@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+﻿using System.Diagnostics.CodeAnalysis;
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,7 +21,7 @@ namespace TicTacToe
     {
         public const string SwaggerRoute = "/swagger";
 
-        public Startup(IHostingEnvironment env)
+        public Startup(IWebHostEnvironment env)
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
@@ -41,25 +36,34 @@ namespace TicTacToe
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddLogging(config =>
+            {
+                config.AddDebug();
+                config.AddConsole();
+            });
+
             // Add framework services.
-            services.AddMvc();
-            services.AddSwagger();
+            services.AddSwaggerDocument();
+            
+            services.AddControllers();
 
             services.AddSingleton<IGameRepository, GameRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+            app.UseRouting();
 
-            app.UseMvc();
-            app.UseSwaggerUi(typeof(Startup).GetTypeInfo().Assembly,
-                settings =>
-                {
-                    settings.SwaggerUiRoute = SwaggerRoute;
-                });
+            app.UseEndpoints(endpoints =>
+            { 
+                endpoints.MapControllers();
+            });
+
+            app.UseSwaggerUi3(settings =>
+            {
+                settings.Path = SwaggerRoute;
+            });
         }
     }
 }

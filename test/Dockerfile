@@ -1,4 +1,4 @@
-FROM microsoft/dotnet:2.1-sdk AS build
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 as build
 WORKDIR /src
 COPY TicTacToe.sln ./
 COPY test/TicTacToe.Test/TicTacToe.Test.csproj test/TicTacToe.Test/
